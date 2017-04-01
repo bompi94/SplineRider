@@ -1,30 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 //Interpolation between points with a Catmull-Rom spline
 public class CatmullRomSpline : MonoBehaviour
 {
     //Has to be at least 4 points
     public Transform[] controlPointsList;
-    //Are we making a line or a loop?
-    public bool isLooping = true;
     public LineRenderer lineRenderer;
+    public bool isLooping; 
     //The spline's resolution
     //Make sure it's is adding up to 1, so 0.3 will give a gap, but 0.2 will work
-    public float resolution; 
+    public float resolution;
 
-    //Display without having to press play
-    void OnDrawGizmos()
+    List<Vector3> positions = new List<Vector3>();
+
+    private void Update()
     {
-        Gizmos.color = Color.white;
+        Draw(controlPointsList); 
+    }
 
+    public void Draw(Transform[] controlPoints)
+    {
+        positions.Clear();
         //Draw the Catmull-Rom spline between the points
-        for (int i = 0; i < controlPointsList.Length; i++)
+        for (int i = 0; i < controlPoints.Length; i++)
         {
             //Cant draw between the endpoints
             //Neither do we need to draw from the second to the last endpoint
             //...if we are not making a looping line
-            if ((i == 0 || i == controlPointsList.Length - 2 || i == controlPointsList.Length - 1) && !isLooping)
+            if ((i == 0 || i == controlPoints.Length - 2 || i == controlPoints.Length - 1) && !isLooping)
             {
                 continue;
             }
@@ -44,13 +49,9 @@ public class CatmullRomSpline : MonoBehaviour
 
         //The start position of the line
         Vector3 lastPos = p1;
-
-
-
+        positions.Add(lastPos); 
         //How many times should we loop?
         int loops = Mathf.FloorToInt(1f / resolution);
-        lineRenderer.numPositions = loops; 
-        Vector3[] positions = new Vector3[loops];
 
         for (int i = 1; i <= loops; i++)
         {
@@ -59,16 +60,17 @@ public class CatmullRomSpline : MonoBehaviour
 
             //Find the coordinate between the end points with a Catmull-Rom spline
             Vector3 newPos = GetCatmullRomPosition(t, p0, p1, p2, p3);
-            positions[i-1] = lastPos;
+            positions.Add(newPos);
+             
             ////Draw this line segment
-            Gizmos.DrawLine(lastPos, newPos);
-     
-
+            //Gizmos.DrawLine(lastPos, newPos);
+    
             //Save this pos so we can draw the next line segment
             lastPos = newPos;
         }
         //draw line
-        lineRenderer.SetPositions(positions);
+        lineRenderer.numPositions = positions.Count;
+        lineRenderer.SetPositions(positions.ToArray());
     }
 
     //Clamp the list positions to allow looping
@@ -105,10 +107,5 @@ public class CatmullRomSpline : MonoBehaviour
         Vector3 pos = 0.5f * (a + (b * t) + (c * t * t) + (d * t * t * t));
 
         return pos;
-    }
-
-    void AddPointToLine(Vector3 point)
-    {
-        
     }
 }
