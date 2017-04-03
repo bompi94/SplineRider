@@ -5,42 +5,57 @@ using UnityEngine;
 public class LineDrawController : MonoBehaviour
 {
 
-    public GameObject spline;
-    public GameObject point;
-    public int pointsNeededToDraw = 4; 
+    public GameObject splinePrefab;
+    public GameObject pointPrefab;
+    public int pointsNeededToDraw = 4;
 
+    GameObject mySplineObject;
     int counter = 0;
-    List<Transform> pointsTransforms = new List<Transform>(); 
+    List<Transform> pointsTransforms = new List<Transform>();
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             counter++;
-            if (counter < pointsNeededToDraw)
+            AddPointToShow();
+            if (counter == pointsNeededToDraw)
             {
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                GameObject pointClone = Instantiate(point);
-                pointClone.transform.position = mousePos;
-                pointsTransforms.Add(pointClone.transform);
-                if(counter == 1)
-                    pointsTransforms.Add(pointClone.transform);
-            }
-
-            else
-            {
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                GameObject pointClone = Instantiate(point);
-                pointClone.transform.position = mousePos;
-                pointsTransforms.Add(pointClone.transform);
-                pointsTransforms.Add(pointClone.transform);
-
-                GameObject splineClone = Instantiate(spline);
-                splineClone.GetComponent<CatmullRomSpline>().Draw(pointsTransforms.ToArray()); 
-                counter = 0;
-                pointsTransforms.Clear(); 
+                ResetOldStuff();
+                mySplineObject = Instantiate(this.splinePrefab);
+                CatmullRomSpline spline = mySplineObject.GetComponent<CatmullRomSpline>();
+                Transform[] pointsArray = pointsTransforms.ToArray(); 
+                spline.Draw(pointsArray);
+                ClearAllPoints();
             }
 
         }
+    }
+
+    void ResetOldStuff()
+    {
+        Destroy(mySplineObject);
+        counter = 0; 
+    }
+
+    void AddPointToShow()
+    {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        GameObject pointClone = Instantiate(pointPrefab);
+        pointClone.transform.position = mousePos;
+        pointsTransforms.Add(pointClone.transform);
+
+        //I will add 2 point at the extremes because they are the control points
+        if (counter == 1 || counter == pointsNeededToDraw) 
+            pointsTransforms.Add(pointClone.transform);
+    }
+
+    void ClearAllPoints()
+    {
+        foreach (Transform t in pointsTransforms)
+        {
+            Destroy(t.gameObject);
+        }
+        pointsTransforms.Clear();
     }
 }
