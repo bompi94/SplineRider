@@ -10,7 +10,6 @@ public class LineDrawController : MonoBehaviour
     public int pointsNeededToDraw = 4; 
 
     int counter = 0;
-    bool splining = false;
     List<Transform> pointsTransforms = new List<Transform>(); 
 
     void Update()
