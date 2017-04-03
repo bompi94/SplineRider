@@ -6,8 +6,11 @@ using System.Collections.Generic;
 public class CatmullRomSpline : MonoBehaviour
 {
     //Has to be at least 4 points
-    public Transform[] controlPointsList;
+    Transform[] controlPointsList;
+
     public LineRenderer lineRenderer;
+    public EdgeCollider2D edgeCollider; 
+
     public bool isLooping; 
     //The spline's resolution
     //Make sure it's is adding up to 1, so 0.3 will give a gap, but 0.2 will work
@@ -15,13 +18,9 @@ public class CatmullRomSpline : MonoBehaviour
 
     List<Vector3> positions = new List<Vector3>();
 
-    private void Update()
-    {
-        Draw(controlPointsList); 
-    }
-
     public void Draw(Transform[] controlPoints)
     {
+        controlPointsList = controlPoints; 
         positions.Clear();
         //Draw the Catmull-Rom spline between the points
         for (int i = 0; i < controlPoints.Length; i++)
@@ -61,9 +60,6 @@ public class CatmullRomSpline : MonoBehaviour
             //Find the coordinate between the end points with a Catmull-Rom spline
             Vector3 newPos = GetCatmullRomPosition(t, p0, p1, p2, p3);
             positions.Add(newPos);
-             
-            ////Draw this line segment
-            //Gizmos.DrawLine(lastPos, newPos);
     
             //Save this pos so we can draw the next line segment
             lastPos = newPos;
@@ -71,6 +67,14 @@ public class CatmullRomSpline : MonoBehaviour
         //draw line
         lineRenderer.numPositions = positions.Count;
         lineRenderer.SetPositions(positions.ToArray());
+
+
+        Vector2[] temp = new Vector2[positions.Count];
+        for (int i = 0; i < positions.Count; i++)
+        {
+            temp[i] = new Vector2(positions[i].x, positions[i].y); 
+        }
+        edgeCollider.points = temp;
     }
 
     //Clamp the list positions to allow looping
