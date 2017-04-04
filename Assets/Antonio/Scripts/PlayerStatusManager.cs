@@ -39,6 +39,7 @@ public class PlayerStatusManager : MonoBehaviour {
 
 	void AddPoints(float amount){
 		score += amount;
+        UpdateHUD();
 	}
 	
 	void LoseLives(){

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SideScrollerEnemy : SideScrollerObject {
 
-	void OnTriggerEnter(Collider coll){
+	void OnTriggerEnter2D(Collider2D coll){
 		if (coll.CompareTag ("Player")) {
 			PlayerStatusManager.Instance.ReceiveHit.Invoke ();
 		}

@@ -8,7 +8,7 @@ public class SideScrollerCoin : SideScrollerObject {
 	float points=100;
 
 
-	void OnTriggerEnter(Collider coll){
+	void OnTriggerEnter2D(Collider2D coll){
 		if (coll.CompareTag ("Player")) {
 			PlayerStatusManager.Instance.AddPoint.Invoke (points);
 		}
