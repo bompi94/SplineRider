@@ -5,6 +5,7 @@ using UnityEngine;
 public class LineDrawController : MonoBehaviour
 {
 
+    public Color color; 
     public GameObject splinePrefab;
     public GameObject pointPrefab;
     public int pointsNeededToDraw = 4;
@@ -22,7 +23,9 @@ public class LineDrawController : MonoBehaviour
             if (counter == pointsNeededToDraw)
             {
                 ResetOldStuff();
-                mySplineObject = Instantiate(this.splinePrefab);
+                mySplineObject = Instantiate(splinePrefab);
+                mySplineObject.GetComponent<LineRenderer>().startColor = color;
+                mySplineObject.GetComponent<LineRenderer>().endColor = color;
                 CatmullRomSpline spline = mySplineObject.GetComponent<CatmullRomSpline>();
                 Transform[] pointsArray = pointsTransforms.ToArray(); 
                 spline.Draw(pointsArray);
@@ -42,6 +45,7 @@ public class LineDrawController : MonoBehaviour
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         GameObject pointClone = Instantiate(pointPrefab);
+        pointClone.GetComponent<SpriteRenderer>().color = color; 
         pointClone.transform.position = mousePos;
         pointsTransforms.Add(pointClone.transform);
 
