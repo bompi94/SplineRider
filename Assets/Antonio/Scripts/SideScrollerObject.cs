@@ -18,4 +18,5 @@ public class SideScrollerObject : MonoBehaviour {
 	void Update () {
 		transform.Translate (-transform.right * Speed * Time.deltaTime);
 	}
+
 }
