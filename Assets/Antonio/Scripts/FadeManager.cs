@@ -28,6 +28,7 @@ public class FadeManager : MonoBehaviour {
 			yield return new WaitForEndOfFrame ();
 		}
 		fadePanel.alpha = 1f;
+        callback();
 	}
 
 	public void StartFadeIn(Action callback){
