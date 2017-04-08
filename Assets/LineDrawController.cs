@@ -13,6 +13,15 @@ public class LineDrawController : MonoBehaviour
     GameObject mySplineObject;
     int counter = 0;
     List<Transform> pointsTransforms = new List<Transform>();
+    CatmullRomSpline spline; 
+
+    private void Awake()
+    {
+        mySplineObject = Instantiate(splinePrefab);
+        mySplineObject.GetComponent<LineRenderer>().startColor = color;
+        mySplineObject.GetComponent<LineRenderer>().endColor = color;
+        spline = mySplineObject.GetComponent<CatmullRomSpline>();
+    }
 
     void Update()
     {
@@ -23,12 +32,11 @@ public class LineDrawController : MonoBehaviour
             if (counter == pointsNeededToDraw)
             {
                 ResetOldStuff();
-                mySplineObject = Instantiate(splinePrefab);
-                mySplineObject.GetComponent<LineRenderer>().startColor = color;
-                mySplineObject.GetComponent<LineRenderer>().endColor = color;
-                CatmullRomSpline spline = mySplineObject.GetComponent<CatmullRomSpline>();
-                Transform[] pointsArray = pointsTransforms.ToArray(); 
-                spline.Draw(pointsArray);
+               
+                Transform[] points = pointsTransforms.ToArray(); 
+                spline.Draw(points);
+                mySplineObject.SetActive(true); 
+
                 ClearAllPoints();
             }
 
@@ -37,7 +45,7 @@ public class LineDrawController : MonoBehaviour
 
     void ResetOldStuff()
     {
-        Destroy(mySplineObject);
+        mySplineObject.SetActive(false); 
         counter = 0; 
     }
 
