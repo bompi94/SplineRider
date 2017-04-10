@@ -38,7 +38,6 @@ public class CatmullRomSpline : MonoBehaviour
     }
 
     //draws a spline between pi and pi_plus_1
-    //requires at least 4 points
     void DrawCatmullRomSpline(Vector3 pi_minus_1, Vector3 pi, Vector3 pi_plus_1, Vector3 pi_plus_2)
     {
         positions.Add(pi); 

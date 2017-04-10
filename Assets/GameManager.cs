@@ -6,10 +6,16 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
 	[SerializeField]
-	Image countDownImage;
+	GameObject countDownPanel;
+
+    [SerializeField]
+    Text countdownText; 
 
 	[SerializeField]
 	Sprite[] countDownNumbers;
+
+    [SerializeField]
+    KeyCode buttonToPress; 
 
 	private bool inCountDown=false;
 	private bool gameStarted=false;
@@ -17,13 +23,14 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 0;
-		countDownImage.enabled = false;
-	}
+        countdownText.text = "PRESS " + buttonToPress + " TO START";  
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		if (!gameStarted) {
-			if (Input.GetKeyDown (KeyCode.Return)) {
+			if (Input.GetKeyDown (buttonToPress)) {
 				if (!inCountDown) {
 					inCountDown = true;
 					StartCoroutine (StartCountdown());
@@ -33,13 +40,12 @@ public class GameManager : MonoBehaviour {
 	}
 
 	IEnumerator StartCountdown(){
-		countDownImage.enabled = true;
 		Time.timeScale = 0;
 		for(int i=0;i<countDownNumbers.Length;i++){
-			countDownImage.sprite = countDownNumbers [i];
+            countdownText.text = (countDownNumbers.Length - i).ToString(); 
 			yield return new WaitForSecondsRealtime (1);
 		}
-		countDownImage.enabled = false;
+        countDownPanel.SetActive(false); 
 		Time.timeScale = 1;
 		inCountDown = false;
 		gameStarted = true;
