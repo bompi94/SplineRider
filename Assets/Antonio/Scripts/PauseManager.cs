@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour {
 
@@ -39,7 +40,7 @@ public class PauseManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Escape)) {
+		if (Input.GetKeyDown (KeyCode.Escape) && (Time.timeScale!=0 || pauseState)) {
 			OnPauseChanged.Invoke (!pauseState);
 			SwitchPause (!pauseState);
 		}
@@ -63,4 +64,10 @@ public class PauseManager : MonoBehaviour {
 		Time.timeScale = 1f;
 		pausePanel.alpha = alphaInGame;
 	}
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu"); 
+    }
 }
