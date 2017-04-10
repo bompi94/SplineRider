@@ -57,12 +57,14 @@ public class PauseManager : MonoBehaviour {
 		pauseState = true;
 		Time.timeScale = 0;
 		pausePanel.alpha = alphaInPause;
-	}
+        pausePanel.interactable = true; 
+    }
 
 	public void GoToGame(){
 		pauseState = false;
 		Time.timeScale = 1f;
 		pausePanel.alpha = alphaInGame;
+        pausePanel.interactable = false; 
 	}
 
     public void GoToMainMenu()
