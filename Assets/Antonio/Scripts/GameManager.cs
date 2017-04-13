@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour {
 
@@ -19,6 +20,28 @@ public class GameManager : MonoBehaviour {
 
 	private bool inCountDown=false;
 	private bool gameStarted=false;
+
+	public UnityEvent OnPlayerLosesLife;
+
+	public UnityEvent OnPlayerOutOfScreen;
+
+
+	public static GameManager Instance;
+
+	public int lives=3;
+
+
+	void Awake(){
+		if (Instance == null) {
+			Instance = this;
+			OnPlayerLosesLife = new UnityEvent ();
+			OnPlayerLosesLife.AddListener (LoseLife);
+			OnPlayerOutOfScreen = new UnityEvent ();
+			OnPlayerOutOfScreen.AddListener (GameOver);
+		} else {
+			Destroy (gameObject);
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -49,5 +72,20 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = 1;
 		inCountDown = false;
 		gameStarted = true;
+	}
+
+	private void LoseLife(){
+		Debug.Log ("Ho perso una vita");
+		lives--;
+		if (lives <= 0) {
+			GameOver ();
+		} else {
+			PlayerStatusManager.Instance.updateHUD.Invoke ();
+		}
+	}
+
+	private void GameOver(){
+		Debug.Log ("Game Over");
+		PlayerStatusManager.Instance.ShowGameOver ();
 	}
 }

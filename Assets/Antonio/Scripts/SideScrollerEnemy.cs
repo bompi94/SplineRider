@@ -6,7 +6,7 @@ public class SideScrollerEnemy : SideScrollerObject {
 
 	void OnTriggerEnter2D(Collider2D coll){
 		if (coll.CompareTag ("Player")) {
-			PlayerStatusManager.Instance.ReceiveHit.Invoke ();
+			GameManager.Instance.OnPlayerLosesLife.Invoke ();
             Destroy(gameObject); 
 		}
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatusManager : MonoBehaviour {
 
@@ -13,11 +14,13 @@ public class PlayerStatusManager : MonoBehaviour {
 	private Image[] heartImages;
 	private Text scoreText;
 
-	private int lives=3;
 	private float score=0;
 
-	public UnityEvent ReceiveHit;
+	public UnityEvent updateHUD;
 	public FloatUnityEvent AddPoint;
+
+
+	private CanvasGroup GameOverPanel;
 
 	void Awake(){
 		if (Instance == null) {
@@ -28,8 +31,11 @@ public class PlayerStatusManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		ReceiveHit = new UnityEvent ();
-		ReceiveHit.AddListener (LoseLives);
+		GameOverPanel = transform.FindChild ("GameOver").GetComponent<CanvasGroup> ();
+		GameOverPanel.alpha = 0;
+		GameOverPanel.interactable = false;
+		updateHUD = new UnityEvent ();
+		updateHUD.AddListener (UpdateHUD);
 		AddPoint = new FloatUnityEvent ();
 		AddPoint.AddListener (AddPoints);
 		scoreText=GetComponentInChildren<Text> ();
@@ -41,20 +47,27 @@ public class PlayerStatusManager : MonoBehaviour {
 		score += amount;
         UpdateHUD();
 	}
-	
-	void LoseLives(){
-		lives--;
-		UpdateHUD ();
-	}
 
 	void UpdateHUD(){
 		scoreText.text = "Score:" + score;
 		for (int i = 0; i < heartImages.Length; i++) {
-			if (i + 1 <= lives) {
+			if (i + 1 <= GameManager.Instance.lives) {
 				heartImages [i].color = Color.white;
 			} else {
 				heartImages [i].color = new Color (1, 1, 1, 0);
 			}
 		}
+	}
+
+
+	public void ShowGameOver(){
+		GameOverPanel.alpha = 1;
+		GameOverPanel.interactable = true;
+		Time.timeScale = 0;
+	}
+
+
+	public void RestartGame(){
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
 	}
 }
