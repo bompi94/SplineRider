@@ -13,8 +13,11 @@ public class PlayerStatusManager : MonoBehaviour {
 
 	private Image[] heartImages;
 	private Text scoreText;
+    public Text bestScoreText; 
 
 	private float score=0;
+    private float bestScore = 0;
+    private string bestScoreSaveKey = "best"; 
 
 	public UnityEvent updateHUD;
 	public FloatUnityEvent AddPoint;
@@ -31,7 +34,15 @@ public class PlayerStatusManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameOverPanel = transform.FindChild ("GameOver").GetComponent<CanvasGroup> ();
+        if (PlayerPrefs.HasKey(bestScoreSaveKey))
+        {
+            bestScore = PlayerPrefs.GetFloat(bestScoreSaveKey);
+        }
+        else
+        {
+            PlayerPrefs.SetFloat(bestScoreSaveKey, 0);
+        }
+        GameOverPanel = transform.FindChild ("GameOver").GetComponent<CanvasGroup> ();
 		GameOverPanel.alpha = 0;
 		GameOverPanel.interactable = false;
 		updateHUD = new UnityEvent ();
@@ -45,11 +56,17 @@ public class PlayerStatusManager : MonoBehaviour {
 
 	void AddPoints(float amount){
 		score += amount;
+        if (score > bestScore)
+        {
+            bestScore = score;
+            PlayerPrefs.SetFloat(bestScoreSaveKey, bestScore);
+        }
         UpdateHUD();
 	}
 
 	void UpdateHUD(){
-		scoreText.text = "Score:" + score;
+		scoreText.text = "Score: " + score;
+        bestScoreText.text = "Best: " + bestScore;
 		for (int i = 0; i < heartImages.Length; i++) {
 			if (i + 1 <= GameManager.Instance.lives) {
 				heartImages [i].color = Color.white;
