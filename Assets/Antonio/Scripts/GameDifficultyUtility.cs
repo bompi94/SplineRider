@@ -11,7 +11,7 @@ public class GameDifficultyUtility : MonoBehaviour
     private float surfaceEffectorSpeedBasic = 4;
     private float cameraSpeedBasic = 3;
 
-    public bool challenge;
+    public bool difficultMode;
 
     [SerializeField]
     private float DifficultyUpdateInterval = 1f;
@@ -45,6 +45,8 @@ public class GameDifficultyUtility : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            if (Informations.Instance != null) // Informations comes from main menu, if it is absent the variable on game manager will be the one chosen for difficulty
+                difficultMode = Informations.Instance.IsDifficultMode();
         }
         else
         {
@@ -57,7 +59,8 @@ public class GameDifficultyUtility : MonoBehaviour
     {
         currentCameraSpeed = CameraMinSpeed;
         currentSurfaceEffectorSpeed = SurfaceEffectorMinSpeed;
-        if (challenge)
+        PlayerStatusManager.Instance.SetDifficult(difficultMode); 
+        if (difficultMode)
             AdjustDifficulty();
     }
 
@@ -76,14 +79,14 @@ public class GameDifficultyUtility : MonoBehaviour
 
     public float getCameraSpeed()
     {
-        if (challenge)
+        if (difficultMode)
             return Mathf.Clamp(currentCameraSpeed, CameraMinSpeed, CameraMaxSpeed);
         return cameraSpeedBasic;
     }
 
     public float getSurfaceEffectorForce()
     {
-        if (challenge)
+        if (difficultMode)
             return Mathf.Clamp(currentSurfaceEffectorSpeed, SurfaceEffectorMinSpeed, SurfaceEffectorMaxSpeed);
         return surfaceEffectorSpeedBasic;
     }
