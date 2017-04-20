@@ -10,12 +10,14 @@ public class GameDifficultyUtility : MonoBehaviour
 
     private float surfaceEffectorSpeedBasic = 4;
     private float cameraSpeedBasic = 3;
+    private float playerGravityBasic = 0.3f;
 
     public bool difficultMode;
 
     [SerializeField]
     private float DifficultyUpdateInterval = 1f;
 
+    [Space(5)]
     [SerializeField]
     private float SurfaceEffectorMinSpeed = 3f;
 
@@ -25,6 +27,7 @@ public class GameDifficultyUtility : MonoBehaviour
     [SerializeField]
     private float SurfaceEffectorIncrementPercentage = 5f;
 
+    [Space(5)]
     [SerializeField]
     private float CameraMinSpeed = 4f;
 
@@ -34,10 +37,23 @@ public class GameDifficultyUtility : MonoBehaviour
     [SerializeField]
     private float CameraSpeedIncrementPercentage = 5f;
 
+    [Space(5)]
+    [SerializeField]
+    private float PlayerMinGravity = .3f;
+
+    [SerializeField]
+    private float PlayerMaxGravity = 8;
+
+    [SerializeField]
+    private float PlayerGravityIncreaseRate = 1;
+
+    [Space(5)]
     [SerializeField]
     private float currentCameraSpeed;
     [SerializeField]
     private float currentSurfaceEffectorSpeed;
+    [SerializeField]
+    private float currentPlayerGravity;
 
 
     void Awake()
@@ -59,7 +75,8 @@ public class GameDifficultyUtility : MonoBehaviour
     {
         currentCameraSpeed = CameraMinSpeed;
         currentSurfaceEffectorSpeed = SurfaceEffectorMinSpeed;
-        PlayerStatusManager.Instance.SetDifficult(difficultMode); 
+        currentPlayerGravity = PlayerMinGravity;
+        PlayerStatusManager.Instance.SetDifficult(difficultMode);
         if (difficultMode)
             AdjustDifficulty();
     }
@@ -74,6 +91,11 @@ public class GameDifficultyUtility : MonoBehaviour
         tmp = (currentSurfaceEffectorSpeed * SurfaceEffectorIncrementPercentage) / 100;
         currentSurfaceEffectorSpeed += tmp;
 
+        //calcolo il 5% del valore attuale, quindi incremento il valore attuale di quella quantità
+        tmp = (currentPlayerGravity * PlayerGravityIncreaseRate) / 100;
+        currentPlayerGravity += tmp;
+        setPlayerGravity();
+
         Invoke("AdjustDifficulty", DifficultyUpdateInterval);
     }
 
@@ -82,6 +104,16 @@ public class GameDifficultyUtility : MonoBehaviour
         if (difficultMode)
             return Mathf.Clamp(currentCameraSpeed, CameraMinSpeed, CameraMaxSpeed);
         return cameraSpeedBasic;
+    }
+
+    public void setPlayerGravity()
+    {
+        float g = 0;
+        if (difficultMode)
+            g = Mathf.Clamp(currentPlayerGravity, PlayerMinGravity, PlayerMaxGravity);
+        else
+            g = playerGravityBasic;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().gravityScale = g;
     }
 
     public float getSurfaceEffectorForce()
