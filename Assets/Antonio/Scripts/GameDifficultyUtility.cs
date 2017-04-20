@@ -55,6 +55,8 @@ public class GameDifficultyUtility : MonoBehaviour
     [SerializeField]
     private float currentPlayerGravity;
 
+    Rigidbody2D rbPlayer; 
+
 
     void Awake()
     {
@@ -76,6 +78,7 @@ public class GameDifficultyUtility : MonoBehaviour
         currentCameraSpeed = CameraMinSpeed;
         currentSurfaceEffectorSpeed = SurfaceEffectorMinSpeed;
         currentPlayerGravity = PlayerMinGravity;
+        rbPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>(); 
         PlayerStatusManager.Instance.SetDifficult(difficultMode);
         if (difficultMode)
             AdjustDifficulty();
@@ -113,7 +116,7 @@ public class GameDifficultyUtility : MonoBehaviour
             g = Mathf.Clamp(currentPlayerGravity, PlayerMinGravity, PlayerMaxGravity);
         else
             g = playerGravityBasic;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().gravityScale = g;
+        rbPlayer.gravityScale = g;
     }
 
     public float getSurfaceEffectorForce()
