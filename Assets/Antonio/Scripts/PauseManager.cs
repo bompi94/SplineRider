@@ -21,6 +21,7 @@ public class PauseManager : MonoBehaviour {
 
 	private bool pauseState=false;
 	private CanvasGroup pausePanel;
+	private CanvasGroup buttonsPanel;
 
 	void Awake(){
 		if (Instance == null) {
@@ -33,6 +34,7 @@ public class PauseManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		pausePanel = GetComponent<CanvasGroup> ();
+		buttonsPanel = transform.Find ("Buttons").GetComponent<CanvasGroup> ();
 		OnPauseChanged = new BoolUnityEvent ();
 		ChangePauseState = new BoolUnityEvent ();
 		ChangePauseState.AddListener (SwitchPause);
@@ -59,6 +61,7 @@ public class PauseManager : MonoBehaviour {
 		pausePanel.alpha = alphaInPause;
         pausePanel.interactable = true; 
 		pausePanel.blocksRaycasts = true;
+		buttonsPanel.gameObject.SetActive (true);
     }
 
 	public void GoToGame(){
@@ -67,6 +70,7 @@ public class PauseManager : MonoBehaviour {
 		pausePanel.alpha = alphaInGame;
         pausePanel.interactable = false;
 		pausePanel.blocksRaycasts = false;
+		buttonsPanel.gameObject.SetActive (false);
 	}
 
     public void GoToMainMenu()
