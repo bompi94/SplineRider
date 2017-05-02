@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!gameStarted) {
+        if (!gameStarted) {
 			if (Input.GetKeyDown (buttonToPress)) {
 				if (!inCountDown) {
 					inCountDown = true;

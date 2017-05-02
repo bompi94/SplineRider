@@ -13,7 +13,12 @@ public class LineDrawController : MonoBehaviour
     GameObject mySplineObject;
     int counter = 0;
     List<Transform> pointsTransforms = new List<Transform>();
-    CatmullRomSpline spline; 
+    CatmullRomSpline spline;
+
+    //cachedValue
+    GameObject pointClone;
+    Vector2 mousePos;
+
 
     private void Awake()
     {
@@ -33,13 +38,11 @@ public class LineDrawController : MonoBehaviour
             {
                 ResetOldStuff();
                
-                Transform[] points = pointsTransforms.ToArray(); 
-                spline.Draw(points);
+                spline.Draw(pointsTransforms);
                 mySplineObject.SetActive(true); 
 
                 ClearAllPoints();
             }
-
         }
     }
 
@@ -51,8 +54,8 @@ public class LineDrawController : MonoBehaviour
 
     void AddPointToShow()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        GameObject pointClone = pointPooler.GetPooledObject(); 
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        pointClone = pointPooler.GetPooledObject(); 
         pointClone.GetComponent<SpriteRenderer>().color = color; 
         pointClone.transform.position = mousePos;
         pointsTransforms.Add(pointClone.transform);

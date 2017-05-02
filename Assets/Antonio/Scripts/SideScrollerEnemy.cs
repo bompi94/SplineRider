@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SideScrollerEnemy : SideScrollerObject {
-
+    string playerTag = "Player"; 
 	void OnTriggerEnter2D(Collider2D coll){
-		if (coll.CompareTag ("Player")) {
+		if (coll.CompareTag (playerTag)) {
 			GameManager.Instance.OnPlayerLosesLife.Invoke ();
             gameObject.SetActive(false); 
 			coll.GetComponent<Animator> ().SetTrigger ("Hit");

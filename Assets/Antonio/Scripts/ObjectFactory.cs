@@ -16,6 +16,7 @@ public class ObjectFactory : MonoBehaviour {
 	[SerializeField]
 	List<ObjectPooler> objectsPooler;
 
+    GameObject scrollerObject; 
 
 	private float counter;
 	// Use this for initialization
@@ -33,15 +34,13 @@ public class ObjectFactory : MonoBehaviour {
 	}
 
 	void Spawn(){
-		var interval = UpperY + LowerY;
-		var SpawnY = Random.Range (0, interval) - LowerY;
+		float interval = UpperY + LowerY;
+		float SpawnY = Random.Range (0, interval) - LowerY;
 
-		var prefabToInstantiate = Random.Range (0, objectsPooler.Count);
+        int chosenScrollerIndex = Random.Range(0, objectsPooler.Count);
 
-		var positionToInstantiate = transform.position + new Vector3 (0, SpawnY, 0);
-
-        GameObject obj = objectsPooler[prefabToInstantiate].GetPooledObject();
-        obj.transform.position = positionToInstantiate; 
+        scrollerObject = objectsPooler[chosenScrollerIndex].GetPooledObject();
+        scrollerObject.transform.position = transform.position + new Vector3(0, SpawnY, 0); ; 
 	}
 
 	void OnDrawGizmos(){

@@ -35,17 +35,6 @@ public class MainMenuManager : MonoBehaviour
         });
     }
 
-    //public void SwitchMainOptions()
-    //{
-    //    if (inOptionsCanvas)
-    //    {
-    //        GoToGame();
-    //    }
-    //    else
-    //    {
-    //        GoToOptions();
-    //    }
-    //}
 
     void GoToMain()
     {

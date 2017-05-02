@@ -22,7 +22,6 @@ public class PlayerStatusManager : MonoBehaviour
 
     private string bestScoreSaveKeyRelax = "bestRelax";
     private string bestScoreSaveKeyChallenge = "bestChallenge";
-    string scoreString = "Score: "; 
     string bestScoreSaveKey;
 
     private string bestScoreString; 

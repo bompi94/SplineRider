@@ -12,24 +12,29 @@ public class CatmullRomSpline : MonoBehaviour
     public float resolution;
 
     List<Vector3> positions = new List<Vector3>();
-    Vector2[] temp;
-    Vector2 t = Vector2.zero; 
 
-    public void Draw(Transform[] knots)
+    //cachedValues
+    Vector2[] temp;
+    Vector2 t = Vector2.zero;
+    Vector3 intermediatePoint = Vector3.zero;
+    Vector3 pi_minus_1, pi, pi_plus_1, pi_plus_2; 
+
+    public void Draw(List<Transform> knots)
     {
         positions.Clear();
         //Draw the Catmull-Rom spline between the points for each pair on points
-        for (int i = 0; i < knots.Length; i++)
+        for (int i = 0; i < knots.Count; i++)
         {
             //avoids getting out of range
-            if (i > 0 && i + 2 <= knots.Length - 1)
+            if (i > 0 && i + 2 <= knots.Count - 1)
             {
-                Vector3 pi_minus_1 = knots[i - 1].position;
-                Vector3 pi = knots[i].position;
-                Vector3 pi_plus_1 = knots[i + 1].position;
-                Vector3 pi_plus_2 = knots[i + 2].position;
+                //four points are needed to draw a spline
+                pi_minus_1 = knots[i - 1].position;
+                pi = knots[i].position;
+                pi_plus_1 = knots[i + 1].position;
+                pi_plus_2 = knots[i + 2].position;
 
-                FindPoints(pi_minus_1, pi, pi_plus_1, pi_plus_2);
+                FindIntermediatePoints(pi_minus_1, pi, pi_plus_1, pi_plus_2);
             }
         }
 
@@ -52,7 +57,7 @@ public class CatmullRomSpline : MonoBehaviour
     }
 
     //finds some intermediate points and adds them to the positions list
-    void FindPoints(Vector3 pi_minus_1, Vector3 pi, Vector3 pi_plus_1, Vector3 pi_plus_2)
+    void FindIntermediatePoints(Vector3 pi_minus_1, Vector3 pi, Vector3 pi_plus_1, Vector3 pi_plus_2)
     {
         positions.Add(pi);
 
@@ -62,7 +67,7 @@ public class CatmullRomSpline : MonoBehaviour
         for (int i = 1; i < numberOfIntermediatePoints; i++)
         {
             float percentageOnTheLine = i * resolution;
-            Vector3 intermediatePoint = GetCatmullRomPosition(percentageOnTheLine, pi_minus_1, pi, pi_plus_1, pi_plus_2);
+            intermediatePoint = GetCatmullRomPosition(percentageOnTheLine, pi_minus_1, pi, pi_plus_1, pi_plus_2);
             positions.Add(intermediatePoint);
         }
 
