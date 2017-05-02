@@ -16,6 +16,7 @@ public class PlayerStatusManager : MonoBehaviour
     private Text scoreText;
     public Text bestScoreText;
     public Text kindOfBestScoreText; 
+	public Text metersText;
 
     private float score = 0;
     private float bestScore = 0;
@@ -29,8 +30,12 @@ public class PlayerStatusManager : MonoBehaviour
     public UnityEvent updateHUD;
     public FloatUnityEvent AddPoint;
 
-
     private CanvasGroup GameOverPanel;
+
+	private Transform player;
+	private float lastPlayerXValue;
+
+	private float meters = 0;
 
     void Awake()
     {
@@ -41,6 +46,23 @@ public class PlayerStatusManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
+	void Start(){
+		player = GameObject.FindWithTag ("Player").transform;
+		lastPlayerXValue = player.position.x;
+	}
+
+	void FixedUpdate(){
+		//calcolo la differenza tra la posizione vecchia e quella attuale
+		float delta=player.position.x-lastPlayerXValue;
+
+		//lo spostamento potrebbe anche essere verso sinistra, in quel caso non faccio nulla
+		if (delta > 0) {
+			lastPlayerXValue = player.position.x;
+			meters += delta;
+			metersText.text=meters.ToString("0.##")+" m";
+		}
+	}
 
     void AddPoints(float amount)
     {

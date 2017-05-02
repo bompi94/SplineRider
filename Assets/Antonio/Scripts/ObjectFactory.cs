@@ -40,7 +40,9 @@ public class ObjectFactory : MonoBehaviour {
         int chosenScrollerIndex = Random.Range(0, objectsPooler.Count);
 
         scrollerObject = objectsPooler[chosenScrollerIndex].GetPooledObject();
-        scrollerObject.transform.position = transform.position + new Vector3(0, SpawnY, 0); ; 
+		if (scrollerObject != null) {
+			scrollerObject.transform.position = transform.position + new Vector3 (0, SpawnY, 0);
+		}
 	}
 
 	void OnDrawGizmos(){
