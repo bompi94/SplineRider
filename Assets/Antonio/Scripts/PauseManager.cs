@@ -53,12 +53,13 @@ public class PauseManager : MonoBehaviour {
 			GoToGame();
 	}
 
-	void GoToPause(){
+	void GoToPause(){   
 		pauseState = true;
 		Time.timeScale = 0;
 		pausePanel.alpha = alphaInPause;
         pausePanel.interactable = true; 
 		pausePanel.blocksRaycasts = true;
+        System.GC.Collect();
     }
 
 	public void GoToGame(){

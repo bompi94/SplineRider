@@ -75,6 +75,7 @@ public class PlayerStatusManager : MonoBehaviour
     {
         GameOverPanel.alpha = 1;
         GameOverPanel.interactable = true;
+        System.GC.Collect(); 
         Time.timeScale = 0;
     }
 
