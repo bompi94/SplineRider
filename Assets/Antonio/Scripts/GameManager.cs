@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 0;
+        System.GC.Collect(); 
         countdownText.text = "PRESS " + buttonToPress + " TO START";  
     }
 	
