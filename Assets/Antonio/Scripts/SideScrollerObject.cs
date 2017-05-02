@@ -10,13 +10,25 @@ public class SideScrollerObject : MonoBehaviour {
 	[SerializeField]
 	float DestroyItSelfAfter=5f;
 
-	void Start(){
-		Destroy (gameObject, DestroyItSelfAfter);
-	}
+    float timer;
 
-	// Update is called once per frame
-	void Update () {
-		transform.Translate (-transform.right * Speed * Time.deltaTime);
+    private void OnEnable()
+    {
+        timer = 0; 
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (gameObject.activeInHierarchy)
+        {
+            transform.Translate(-transform.right * Speed * Time.deltaTime);
+            timer += Time.deltaTime;
+            if (timer >= DestroyItSelfAfter)
+            {
+                timer = 0;
+                gameObject.SetActive(false);
+            }
+        }
 	}
 
 }

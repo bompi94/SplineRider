@@ -75,7 +75,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void LoseLife(){
-		Debug.Log ("Ho perso una vita");
 		lives--;
 		if (lives <= 0) {
 			GameOver ();
@@ -85,7 +84,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void GameOver(){
-		Debug.Log ("Game Over");
 		PlayerStatusManager.Instance.ShowGameOver ();
 	}
 }

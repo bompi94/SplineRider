@@ -14,7 +14,7 @@ public class ObjectFactory : MonoBehaviour {
 	float spawnTime=10f;
 
 	[SerializeField]
-	List<GameObject> Prefabs;
+	List<ObjectPooler> objectsPooler;
 
 
 	private float counter;
@@ -36,15 +36,18 @@ public class ObjectFactory : MonoBehaviour {
 		var interval = UpperY + LowerY;
 		var SpawnY = Random.Range (0, interval) - LowerY;
 
-		var prefabToInstantiate = Random.Range (0, Prefabs.Count);
+		var prefabToInstantiate = Random.Range (0, objectsPooler.Count);
 
 		var positionToInstantiate = transform.position + new Vector3 (0, SpawnY, 0);
 
-		Instantiate (Prefabs [prefabToInstantiate], positionToInstantiate, Quaternion.identity);
+        GameObject obj = objectsPooler[prefabToInstantiate].GetPooledObject();
+        obj.transform.position = positionToInstantiate; 
 	}
 
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine (transform.position+new Vector3(0,UpperY,0), transform.position-new Vector3(0,LowerY,0));
 	}
+
+
 }
