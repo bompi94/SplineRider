@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
-    public float speed; 
+    public float speed;
+    Vector3 movement = Vector3.zero; 
 
 	void LateUpdate () {
 		speed=GameDifficultyUtility.Instance.getCameraSpeed();
-        transform.position += new Vector3(speed, 0,0) * Time.deltaTime; 
+        movement.x = speed; 
+        transform.position += movement * Time.deltaTime; 
 	}
 }

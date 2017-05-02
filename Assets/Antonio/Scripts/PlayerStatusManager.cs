@@ -15,12 +15,14 @@ public class PlayerStatusManager : MonoBehaviour
     private Image[] heartImages;
     private Text scoreText;
     public Text bestScoreText;
+    public Text kindOfBestScoreText; 
 
     private float score = 0;
     private float bestScore = 0;
 
     private string bestScoreSaveKeyRelax = "bestRelax";
     private string bestScoreSaveKeyChallenge = "bestChallenge";
+    string scoreString = "Score: "; 
     string bestScoreSaveKey;
 
     private string bestScoreString; 
@@ -54,8 +56,8 @@ public class PlayerStatusManager : MonoBehaviour
 
     void UpdateHUD()
     {
-        scoreText.text = "Score: " + score;
-        bestScoreText.text = bestScoreString + bestScore;
+        scoreText.text =score.ToString ();
+        bestScoreText.text = bestScore.ToString();
         for (int i = 0; i < heartImages.Length; i++)
         {
             if (i + 1 <= GameManager.Instance.lives)
@@ -88,13 +90,13 @@ public class PlayerStatusManager : MonoBehaviour
         if (b)
         {
             bestScoreSaveKey = bestScoreSaveKeyChallenge;
-            bestScoreString = "Best (challenge): "; 
+            kindOfBestScoreText.text = "Best (challenge): "; 
         }
 
         else
         {
             bestScoreSaveKey = bestScoreSaveKeyRelax;
-            bestScoreString = "Best (relax): ";
+            kindOfBestScoreText.text = "Best (relax): ";
         }
 
         if (PlayerPrefs.HasKey(bestScoreSaveKey))

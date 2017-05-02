@@ -10,18 +10,24 @@ public class SideScrollerObject : MonoBehaviour {
 	[SerializeField]
 	float DestroyItSelfAfter=5f;
 
+    Rigidbody2D rb; 
+
     float timer;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>(); 
+    }
 
     private void OnEnable()
     {
         timer = 0; 
     }
 
-    // Update is called once per frame
     void Update () {
         if (gameObject.activeInHierarchy)
         {
-            transform.Translate(-transform.right * Speed * Time.deltaTime);
+            rb.MovePosition(transform.position += -transform.right * Speed * Time.deltaTime); 
             timer += Time.deltaTime;
             if (timer >= DestroyItSelfAfter)
             {

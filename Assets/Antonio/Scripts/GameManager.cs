@@ -47,7 +47,6 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		Time.timeScale = 0;
         countdownText.text = "PRESS " + buttonToPress + " TO START";  
-
     }
 	
 	// Update is called once per frame

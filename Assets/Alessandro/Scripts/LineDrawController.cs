@@ -7,7 +7,7 @@ public class LineDrawController : MonoBehaviour
 
     public Color color; 
     public GameObject splinePrefab;
-    public GameObject pointPrefab;
+    public ObjectPooler pointPooler; 
     public int pointsNeededToDraw = 4;
 
     GameObject mySplineObject;
@@ -52,7 +52,7 @@ public class LineDrawController : MonoBehaviour
     void AddPointToShow()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        GameObject pointClone = Instantiate(pointPrefab);
+        GameObject pointClone = pointPooler.GetPooledObject(); 
         pointClone.GetComponent<SpriteRenderer>().color = color; 
         pointClone.transform.position = mousePos;
         pointsTransforms.Add(pointClone.transform);
@@ -66,7 +66,7 @@ public class LineDrawController : MonoBehaviour
     {
         foreach (Transform t in pointsTransforms)
         {
-            Destroy(t.gameObject);
+            t.gameObject.SetActive(false); 
         }
         pointsTransforms.Clear();
     }

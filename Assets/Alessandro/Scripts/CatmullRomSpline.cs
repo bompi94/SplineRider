@@ -5,16 +5,18 @@ using System.Collections.Generic;
 public class CatmullRomSpline : MonoBehaviour
 {
     public LineRenderer lineRenderer;
-    public EdgeCollider2D edgeCollider;  
+    public EdgeCollider2D edgeCollider;
 
     //the lower the value, the smoother the line
     //1/resolution represents the number of intermediate points there will be between the knots of the spline
     public float resolution;
 
     List<Vector3> positions = new List<Vector3>();
+    Vector2[] temp;
+    Vector2 t = Vector2.zero; 
 
     public void Draw(Transform[] knots)
-    { 
+    {
         positions.Clear();
         //Draw the Catmull-Rom spline between the points for each pair on points
         for (int i = 0; i < knots.Length; i++)
@@ -34,11 +36,17 @@ public class CatmullRomSpline : MonoBehaviour
         //draw line in unity game
         lineRenderer.numPositions = positions.Count;
         lineRenderer.SetPositions(positions.ToArray());
+
+
         //create collider for the line
-        Vector2[] temp = new Vector2[positions.Count];
+        if (temp == null)
+            temp = new Vector2[positions.Count];
+
         for (int i = 0; i < positions.Count; i++)
         {
-            temp[i] = new Vector2(positions[i].x, positions[i].y);
+            t.x = positions[i].x;
+            t.y = positions[i].y;
+            temp[i] = t; 
         }
         edgeCollider.points = temp;
     }
@@ -46,8 +54,8 @@ public class CatmullRomSpline : MonoBehaviour
     //finds some intermediate points and adds them to the positions list
     void FindPoints(Vector3 pi_minus_1, Vector3 pi, Vector3 pi_plus_1, Vector3 pi_plus_2)
     {
-        positions.Add(pi); 
-        
+        positions.Add(pi);
+
         //how many intermediate points should we get? 
         int numberOfIntermediatePoints = Mathf.FloorToInt(1f / resolution);
 
