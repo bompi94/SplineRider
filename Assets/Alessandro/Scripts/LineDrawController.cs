@@ -12,16 +12,23 @@ public class LineDrawController : MonoBehaviour
 
     GameObject mySplineObject;
     int counter = 0;
-    List<Transform> pointsTransforms = new List<Transform>();
+    float[] pointsPosX;
+    float[] pointsPosY; 
+    GameObject[] pointsUsed; 
     CatmullRomSpline spline;
 
     //cachedValue
     GameObject pointClone;
     Vector2 mousePos;
+    int listCont;
 
 
     private void Awake()
     {
+        pointsUsed = new GameObject[pointsNeededToDraw + 2];
+        pointsPosX = new float[pointsNeededToDraw + 2];
+        pointsPosY = new float[pointsNeededToDraw + 2];
+
         mySplineObject = Instantiate(splinePrefab);
         mySplineObject.GetComponent<LineRenderer>().startColor = color;
         mySplineObject.GetComponent<LineRenderer>().endColor = color;
@@ -37,13 +44,18 @@ public class LineDrawController : MonoBehaviour
             if (counter == pointsNeededToDraw)
             {
                 ResetOldStuff();
-               
-                spline.Draw(pointsTransforms);
-                mySplineObject.SetActive(true); 
+
+                DrawSpline();
 
                 ClearAllPoints();
             }
         }
+    }
+
+    void DrawSpline()
+    {
+        spline.Draw(pointsPosX, pointsPosY);
+        mySplineObject.SetActive(true);
     }
 
     void ResetOldStuff()
@@ -58,19 +70,28 @@ public class LineDrawController : MonoBehaviour
         pointClone = pointPooler.GetPooledObject(); 
         pointClone.GetComponent<SpriteRenderer>().color = color; 
         pointClone.transform.position = mousePos;
-        pointsTransforms.Add(pointClone.transform);
+
+        pointsUsed[listCont] = pointClone;
+        pointsPosX[listCont] = pointClone.transform.position.x;
+        pointsPosY[listCont] = pointClone.transform.position.y; 
+        listCont++;
 
         //I will add 2 point at the extremes because they are the control points
-        if (counter == 1 || counter == pointsNeededToDraw) 
-            pointsTransforms.Add(pointClone.transform);
+        if (counter == 1 || counter == pointsNeededToDraw)
+        {
+            pointsUsed[listCont] = pointClone;
+            pointsPosX[listCont] = pointClone.transform.position.x;
+            pointsPosY[listCont] = pointClone.transform.position.y;
+            listCont++;
+        }
     }
 
     void ClearAllPoints()
     {
-        foreach (Transform t in pointsTransforms)
+        for (int i = 0; i < pointsUsed.Length; i++)
         {
-            t.gameObject.SetActive(false); 
+            pointsUsed[i].SetActive(false); 
         }
-        pointsTransforms.Clear();
+        listCont = 0; 
     }
 }

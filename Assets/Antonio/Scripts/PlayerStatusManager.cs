@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using System.Text;
 
 public class PlayerStatusManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class PlayerStatusManager : MonoBehaviour
     public Text bestScoreText;
     public Text kindOfBestScoreText; 
 	public Text metersText;
+
+    public Text metersDecimalText; 
 
     private float score = 0;
     private float bestScore = 0;
@@ -60,7 +63,15 @@ public class PlayerStatusManager : MonoBehaviour
 		if (delta > 0) {
 			lastPlayerXValue = player.position.x;
 			meters += delta;
-			metersText.text=meters.ToString("0.##")+" m";
+
+            int intero = (int)meters;
+            float parteDecimale = (meters - intero) * 100;
+            int decimale = (int)parteDecimale;
+
+            metersText.text = intero.ToString();
+
+            metersDecimalText.text = decimale.ToString(); 
+
 		}
 	}
 
