@@ -9,9 +9,10 @@ public class SurfaceEffectorManager : MonoBehaviour {
 	void Start () {
 		surface = GetComponent<SurfaceEffector2D> ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		surface.speed = GameDifficultyUtility.Instance.getSurfaceEffectorForce ();
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+        surface.speed = GameDifficultyUtility.Instance.getSurfaceEffectorForce();
+    }
 }

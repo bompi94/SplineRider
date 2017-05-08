@@ -9,7 +9,7 @@ using System.Text;
 public class PlayerStatusManager : MonoBehaviour
 {
 
-    public class FloatUnityEvent : UnityEvent<float> { }
+    public class IntUnityEvent : UnityEvent<int> { }
 
     public static PlayerStatusManager Instance;
 
@@ -21,8 +21,8 @@ public class PlayerStatusManager : MonoBehaviour
 
     public Text metersDecimalText; 
 
-    private float score = 0;
-    private float bestScore = 0;
+    private int score = 0;
+    private int bestScore = 0;
 
     private string bestScoreSaveKeyRelax = "bestRelax";
     private string bestScoreSaveKeyChallenge = "bestChallenge";
@@ -31,7 +31,7 @@ public class PlayerStatusManager : MonoBehaviour
     private string bestScoreString; 
 
     public UnityEvent updateHUD;
-    public FloatUnityEvent AddPoint;
+    public IntUnityEvent AddPoint;
 
     private CanvasGroup GameOverPanel;
 
@@ -66,7 +66,7 @@ public class PlayerStatusManager : MonoBehaviour
 		}
 	}
 
-    void AddPoints(float amount)
+    void AddPoints(int amount)
     {
         score += amount;
         if (score > bestScore)
@@ -125,7 +125,7 @@ public class PlayerStatusManager : MonoBehaviour
 
         if (PlayerPrefs.HasKey(bestScoreSaveKey))
         {
-            bestScore = PlayerPrefs.GetFloat(bestScoreSaveKey);
+            bestScore = PlayerPrefs.GetInt(bestScoreSaveKey);
         }
         else
         {
@@ -136,7 +136,7 @@ public class PlayerStatusManager : MonoBehaviour
         GameOverPanel.interactable = false;
         updateHUD = new UnityEvent();
         updateHUD.AddListener(UpdateHUD);
-        AddPoint = new FloatUnityEvent();
+        AddPoint = new IntUnityEvent();
         AddPoint.AddListener(AddPoints);
         scoreText = GetComponentInChildren<Text>();
         heartImages = transform.FindChild("Lives").GetComponentsInChildren<Image>();

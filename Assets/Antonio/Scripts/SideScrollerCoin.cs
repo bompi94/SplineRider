@@ -5,7 +5,7 @@ using UnityEngine;
 public class SideScrollerCoin : SideScrollerObject {
 
 	[SerializeField]
-	float points=100;
+	int points=100;
 
     string playerTag = "Player"; 
 
