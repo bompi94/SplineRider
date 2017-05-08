@@ -17,9 +17,6 @@ public class PlayerStatusManager : MonoBehaviour
     private Text scoreText;
     public Text bestScoreText;
     public Text kindOfBestScoreText; 
-	public Text metersText;
-
-    public Text metersDecimalText; 
 
     private int score = 0;
     private int bestScore = 0;
@@ -72,7 +69,7 @@ public class PlayerStatusManager : MonoBehaviour
         if (score > bestScore)
         {
             bestScore = score;
-            PlayerPrefs.SetFloat(bestScoreSaveKey, bestScore);
+            PlayerPrefs.SetInt(bestScoreSaveKey, bestScore);
         }
         UpdateHUD();
     }
@@ -129,7 +126,7 @@ public class PlayerStatusManager : MonoBehaviour
         }
         else
         {
-            PlayerPrefs.SetFloat(bestScoreSaveKey, 0);
+            PlayerPrefs.SetInt(bestScoreSaveKey, 0);
         }
         GameOverPanel = transform.FindChild("GameOver").GetComponent<CanvasGroup>();
         GameOverPanel.alpha = 0;
