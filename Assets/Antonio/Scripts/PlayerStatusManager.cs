@@ -63,15 +63,6 @@ public class PlayerStatusManager : MonoBehaviour
 		if (delta > 0) {
 			lastPlayerXValue = player.position.x;
 			meters += delta;
-
-            int intero = (int)meters;
-            float parteDecimale = (meters - intero) * 100;
-            int decimale = (int)parteDecimale;
-
-            metersText.text = intero.ToString();
-
-            metersDecimalText.text = decimale.ToString(); 
-
 		}
 	}
 
