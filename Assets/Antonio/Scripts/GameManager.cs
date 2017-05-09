@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
 
 	public UnityEvent OnPlayerOutOfScreen;
 
+    public GameObject eventSystem; 
 
 	public static GameManager Instance;
 
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void GameOver(){
+        eventSystem.SetActive(true); 
 		PlayerStatusManager.Instance.ShowGameOver ();
 	}
 }

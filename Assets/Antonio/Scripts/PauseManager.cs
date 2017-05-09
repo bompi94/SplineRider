@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour {
@@ -12,6 +13,8 @@ public class PauseManager : MonoBehaviour {
 
 	public BoolUnityEvent OnPauseChanged;
 	public BoolUnityEvent ChangePauseState;
+
+    EventSystem es; 
 
 	[SerializeField]
 	float alphaInPause=0.5f;
@@ -32,6 +35,8 @@ public class PauseManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        es = GameObject.FindObjectOfType<EventSystem>();
+        es.gameObject.SetActive(false); 
 		pausePanel = GetComponent<CanvasGroup> ();
 		OnPauseChanged = new BoolUnityEvent ();
 		ChangePauseState = new BoolUnityEvent ();
@@ -53,7 +58,8 @@ public class PauseManager : MonoBehaviour {
 			GoToGame();
 	}
 
-	void GoToPause(){   
+	void GoToPause(){
+        es.gameObject.SetActive(true); 
 		pauseState = true;
 		Time.timeScale = 0;
 		pausePanel.alpha = alphaInPause;
@@ -63,7 +69,8 @@ public class PauseManager : MonoBehaviour {
     }
 
 	public void GoToGame(){
-		pauseState = false;
+        es.gameObject.SetActive(false);
+        pauseState = false;
 		Time.timeScale = 1f;
 		pausePanel.alpha = alphaInGame;
         pausePanel.interactable = false;
