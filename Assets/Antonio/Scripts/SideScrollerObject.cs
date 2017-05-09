@@ -2,32 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SideScrollerObject : MonoBehaviour {
+public class SideScrollerObject : MonoBehaviour
+{
 
-	[SerializeField]
-	float Speed;
+    [SerializeField]
+    float Speed;
 
-	[SerializeField]
-	float DestroyItSelfAfter=5f;
+    [SerializeField]
+    float DestroyItSelfAfter = 5f;
 
-    Rigidbody2D rb; 
+    Rigidbody2D rb;
 
     float timer;
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>(); 
-    }
-
     private void OnEnable()
     {
-        timer = 0; 
+        timer = 0;
     }
 
-    void Update () {
+    void Update()
+    {
         if (gameObject.activeInHierarchy)
         {
-            rb.MovePosition(transform.position += -transform.right * Speed * Time.deltaTime); 
+            transform.position += -transform.right * Speed * Time.deltaTime;
             timer += Time.deltaTime;
             if (timer >= DestroyItSelfAfter)
             {
@@ -35,6 +32,6 @@ public class SideScrollerObject : MonoBehaviour {
                 gameObject.SetActive(false);
             }
         }
-	}
+    }
 
 }
