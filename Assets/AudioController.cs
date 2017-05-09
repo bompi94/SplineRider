@@ -7,6 +7,7 @@ public class AudioController : MonoBehaviour {
     [HideInInspector]
     public AudioSource aus;
 
+    public static float volume = 1;
     public static AudioController Instance; 
 
     public AudioClip buttonClickClip;
@@ -18,7 +19,8 @@ public class AudioController : MonoBehaviour {
     private void Awake()
     {
         Instance = this;
-        aus = GetComponent<AudioSource>(); 
+        aus = GetComponent<AudioSource>();
+        aus.volume = volume; 
     }
 
     public void ButtonClick()
@@ -44,5 +46,11 @@ public class AudioController : MonoBehaviour {
     public void LoseHealth()
     {
         aus.PlayOneShot(damagedClip);
+    }
+
+    public void SetVolume(float volumeParam)
+    {
+        volume = volumeParam;
+        aus.volume = volume; 
     }
 }
