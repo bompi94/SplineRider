@@ -20,12 +20,12 @@ public class SideScrollerObject : MonoBehaviour
         timer = 0;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (gameObject.activeInHierarchy)
         {
-            transform.position += -transform.right * Speed * Time.deltaTime;
-            timer += Time.deltaTime;
+            transform.position += -transform.right * Speed * Time.fixedDeltaTime;
+            timer += Time.fixedDeltaTime;
             if (timer >= DestroyItSelfAfter)
             {
                 timer = 0;

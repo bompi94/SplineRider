@@ -7,9 +7,9 @@ public class CameraFollow : MonoBehaviour {
     public float speed;
     Vector3 movement = Vector3.zero; 
 
-	void LateUpdate () {
+	void FixedUpdate () {
 		speed=GameDifficultyUtility.Instance.getCameraSpeed();
         movement.x = speed; 
-        transform.position += movement * Time.deltaTime; 
+        transform.position += movement * Time.fixedDeltaTime; 
 	}
 }

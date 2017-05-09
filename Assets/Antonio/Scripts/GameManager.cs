@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 0;
-        System.GC.Collect(); 
         countdownText.text = "PRESS " + buttonToPress + " TO START";  
     }
 	
@@ -64,10 +63,11 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator StartCountdown(){
 		Time.timeScale = 0;
-		for(int i=0;i<countDownNumbers.Length;i++){
+        for (int i=0;i<countDownNumbers.Length;i++){
             countdownText.text = (countDownNumbers.Length - i).ToString(); 
 			yield return new WaitForSecondsRealtime (1);
 		}
+        System.GC.Collect();
         countDownPanel.SetActive(false); 
 		Time.timeScale = 1;
 		inCountDown = false;

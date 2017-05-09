@@ -19,6 +19,8 @@ public class ObjectFactory : MonoBehaviour {
     GameObject scrollerObject; 
 
 	private float counter;
+    Vector3 temp = Vector3.zero; 
+
 	// Use this for initialization
 	void Start () {
 		counter = spawnTime;
@@ -40,15 +42,17 @@ public class ObjectFactory : MonoBehaviour {
         int chosenScrollerIndex = Random.Range(0, objectsPooler.Count);
 
         scrollerObject = objectsPooler[chosenScrollerIndex].GetPooledObject();
+        temp = transform.position;
+        temp.y = SpawnY; 
 		if (scrollerObject != null) {
-			scrollerObject.transform.position = transform.position + new Vector3 (0, SpawnY, 0);
+            scrollerObject.transform.position = temp;
 		}
 	}
 
-	void OnDrawGizmos(){
-		Gizmos.color = Color.red;
-		Gizmos.DrawLine (transform.position+new Vector3(0,UpperY,0), transform.position-new Vector3(0,LowerY,0));
-	}
+	//void OnDrawGizmos(){
+	//	Gizmos.color = Color.red;
+	//	Gizmos.DrawLine (transform.position+new Vector3(0,UpperY,0), transform.position-new Vector3(0,LowerY,0));
+	//}
 
 
 }
