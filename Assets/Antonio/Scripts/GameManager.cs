@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = 1;
 		inCountDown = false;
 		gameStarted = true;
+        AudioController.Instance.StartPlaying(); 
 	}
 
 	public void LoseLife(){
