@@ -8,7 +8,7 @@ public class GameplayColliders : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D coll){
 		if(coll.CompareTag(playerTag)){
-			GameManager.Instance.OnPlayerOutOfScreen.Invoke ();
+			GameManager.Instance.GameOver();
 		}
 	}
 }

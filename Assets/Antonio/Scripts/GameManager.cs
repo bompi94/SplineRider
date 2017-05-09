@@ -19,11 +19,7 @@ public class GameManager : MonoBehaviour {
     KeyCode buttonToPress; 
 
 	private bool inCountDown=false;
-	private bool gameStarted=false;
-
-	public UnityEvent OnPlayerLosesLife;
-
-	public UnityEvent OnPlayerOutOfScreen;
+    private bool gameStarted = false;
 
     public GameObject eventSystem; 
 
@@ -35,10 +31,6 @@ public class GameManager : MonoBehaviour {
 	void Awake(){
 		if (Instance == null) {
 			Instance = this;
-			OnPlayerLosesLife = new UnityEvent ();
-			OnPlayerLosesLife.AddListener (LoseLife);
-			OnPlayerOutOfScreen = new UnityEvent ();
-			OnPlayerOutOfScreen.AddListener (GameOver);
 		} else {
 			Destroy (gameObject);
 		}
@@ -75,7 +67,7 @@ public class GameManager : MonoBehaviour {
 		gameStarted = true;
 	}
 
-	private void LoseLife(){
+	public void LoseLife(){
 		lives--;
 		if (lives <= 0) {
 			GameOver ();
@@ -84,7 +76,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	private void GameOver(){
+	public void GameOver(){
         eventSystem.SetActive(true); 
 		PlayerStatusManager.Instance.ShowGameOver ();
 	}

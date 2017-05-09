@@ -11,7 +11,7 @@ public class SideScrollerObject : MonoBehaviour
     [SerializeField]
     float DestroyItSelfAfter = 5f;
 
-    Rigidbody2D rb;
+    Vector3 movement = Vector3.zero; 
 
     float timer;
 
@@ -24,7 +24,8 @@ public class SideScrollerObject : MonoBehaviour
     {
         if (gameObject.activeInHierarchy)
         {
-            transform.position += -transform.right * Speed * Time.fixedDeltaTime;
+            movement.x = -1 * Speed * Time.fixedDeltaTime;
+            transform.position += movement; 
             timer += Time.fixedDeltaTime;
             if (timer >= DestroyItSelfAfter)
             {
