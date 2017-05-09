@@ -5,23 +5,28 @@ using UnityEngine.UI;
 
 public class MetersSegnalator : MonoBehaviour
 {
-
     Transform segnalatorCreationPoint;
     Transform player;
     float playerLastXPosition;
     float meters;
 
+    GameObject segnalator;
+    Text segnalatorText; 
     public GameObject metersSegnalatorPrefab;
 
     public int nextSegnalator = 50;
-    // Use this for initialization
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerLastXPosition = player.position.x;
+        segnalator = Instantiate(metersSegnalatorPrefab); 
+        segnalatorText = segnalator.GetComponentInChildren<Text>();
+        segnalator.transform.position = new Vector3(player.transform.position.x + nextSegnalator, 0, 0);
+        segnalatorText.text = nextSegnalator + "m";
+        nextSegnalator += 50;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         //calcolo la differenza tra la posizione vecchia e quella attuale
@@ -31,10 +36,15 @@ public class MetersSegnalator : MonoBehaviour
         meters += delta;
         if (meters >= nextSegnalator - transform.localPosition.x)
         {
-            var segnalatorInstantiationX = player.position.x + transform.localPosition.x;
-            var segnalator = Instantiate(metersSegnalatorPrefab, new Vector3(segnalatorInstantiationX, 0, 0), transform.rotation);
-            segnalator.GetComponentInChildren<Text>().text = nextSegnalator + "m";
-            nextSegnalator += 50;
+            UpdateSegnalator(); 
         }
+    }
+
+    void UpdateSegnalator()
+    {
+        var segnalatorInstantiationX = player.position.x + transform.localPosition.x;
+        segnalator.transform.position = new Vector3(segnalatorInstantiationX, 0, 0); 
+        segnalatorText.text = nextSegnalator + "m";
+        nextSegnalator += 50;
     }
 }

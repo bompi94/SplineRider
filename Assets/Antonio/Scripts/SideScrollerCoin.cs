@@ -9,7 +9,6 @@ public class SideScrollerCoin : SideScrollerObject {
 
     string playerTag = "Player"; 
 
-
 	void OnTriggerEnter2D(Collider2D coll){
 		if (coll.CompareTag (playerTag)) {
 			PlayerStatusManager.Instance.AddPoint.Invoke (points);
