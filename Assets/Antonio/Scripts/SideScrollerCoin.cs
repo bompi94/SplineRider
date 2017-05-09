@@ -14,6 +14,7 @@ public class SideScrollerCoin : SideScrollerObject {
 		if (coll.CompareTag (playerTag)) {
 			PlayerStatusManager.Instance.AddPoint.Invoke (points);
 		}
+        AudioController.Instance.GotACoin(); 
         gameObject.SetActive(false);  
 	}
 }

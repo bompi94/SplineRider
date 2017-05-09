@@ -38,11 +38,11 @@ public class AudioController : MonoBehaviour {
 
     public void GameOver()
     {
-
+        aus.PlayOneShot(gameOverClip);
     }
 
     public void LoseHealth()
     {
-
+        aus.PlayOneShot(damagedClip);
     }
 }

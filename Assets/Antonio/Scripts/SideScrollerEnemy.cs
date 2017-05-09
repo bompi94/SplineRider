@@ -8,8 +8,9 @@ public class SideScrollerEnemy : SideScrollerObject {
 	void OnTriggerEnter2D(Collider2D coll){
 		if (coll.CompareTag (playerTag)) {
             GameManager.Instance.LoseLife();
-            gameObject.SetActive(false); 
-			coll.GetComponent<Animator> ().SetTrigger (hit);
+            gameObject.SetActive(false);
+            AudioController.Instance.LoseHealth();
+            coll.GetComponent<Animator> ().SetTrigger (hit);
 		}
 	}
 }

@@ -94,6 +94,7 @@ public class PlayerStatusManager : MonoBehaviour
 
     public void ShowGameOver()
     {
+        AudioController.Instance.GameOver(); 
         GameOverPanel.alpha = 1;
         GameOverPanel.interactable = true;
         System.GC.Collect(); 
