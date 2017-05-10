@@ -25,32 +25,44 @@ public class AudioController : MonoBehaviour {
 
     public void ButtonClick()
     {
-        aus.PlayOneShot(buttonClickClip); 
+        PlayWithNormalPitch(buttonClickClip); 
     }
 
     public void GotACoin()
     {
-        aus.PlayOneShot(gotACoinClip);
+        PlayWithRandomPitch(0.95f, 1.05f, gotACoinClip); 
     }
 
     public void StartPlaying()
     {
-        aus.PlayOneShot(startPlayingClip);
+        PlayWithNormalPitch(startPlayingClip);
     }
 
     public void GameOver()
     {
-        aus.PlayOneShot(gameOverClip);
+        PlayWithNormalPitch(gameOverClip);
     }
 
     public void LoseHealth()
     {
-        aus.PlayOneShot(damagedClip);
+        PlayWithNormalPitch(damagedClip);
     }
 
     public void SetVolume(float volumeParam)
     {
         volume = volumeParam;
         aus.volume = volume; 
+    }
+
+    void PlayWithNormalPitch(AudioClip clip)
+    {
+        aus.pitch = 1;
+        aus.PlayOneShot(clip);
+    }
+
+    void PlayWithRandomPitch(float minPitch, float maxPitch, AudioClip clip)
+    {
+        aus.pitch = Random.Range(minPitch, maxPitch);
+        aus.PlayOneShot(clip);
     }
 }
