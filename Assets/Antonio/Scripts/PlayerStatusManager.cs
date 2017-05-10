@@ -66,11 +66,6 @@ public class PlayerStatusManager : MonoBehaviour
     void AddPoints(int amount)
     {
         score += amount;
-        if (score > bestScore)
-        {
-            bestScore = score;
-            PlayerPrefs.SetInt(bestScoreSaveKey, bestScore);
-        }
         UpdateHUD();
     }
 
@@ -97,15 +92,36 @@ public class PlayerStatusManager : MonoBehaviour
         AudioController.Instance.GameOver(); 
         GameOverPanel.alpha = 1;
         GameOverPanel.interactable = true;
-        System.GC.Collect(); 
         Time.timeScale = 0;
+		var resultsPanel = GameOverPanel.transform.Find ("Results");
+
+		var scoreText = resultsPanel.Find ("ScoreTitle").GetComponent<Text> ();
+		var scoreValue = resultsPanel.Find ("Score").GetComponent<Text> ();
+		var newScoreText = resultsPanel.Find ("NewScoreTitle").GetComponent<Text> ();
+		var metersText = resultsPanel.Find ("Meters").GetComponent<Text> ();
+
+		scoreValue.text = score.ToString();
+		metersText.text = meters.ToString("0.#");
+		if (score > bestScore) {
+			StartCoroutine (NewBestScoreAnimation (scoreText, newScoreText));
+			PlayerPrefs.SetInt(bestScoreSaveKey, score);
+		}
+
+		System.GC.Collect(); 
     }
 
 
     public void RestartGame()
     {
+		StopCoroutine ("NewBestScoreAnimation");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+	public void ToMainMenu()
+	{
+		StopCoroutine ("NewBestScoreAnimation");
+		SceneManager.LoadScene("MainMenu");
+	}
 
     public void SetDifficult(bool b)
     {
@@ -114,7 +130,6 @@ public class PlayerStatusManager : MonoBehaviour
             bestScoreSaveKey = bestScoreSaveKeyChallenge;
             kindOfBestScoreText.text = "Best (challenge): "; 
         }
-
         else
         {
             bestScoreSaveKey = bestScoreSaveKeyRelax;
@@ -141,4 +156,15 @@ public class PlayerStatusManager : MonoBehaviour
 
         UpdateHUD();
     }
+
+	IEnumerator NewBestScoreAnimation(Text scoreText,Text newScoreText){
+		float rad = 0;
+		while (true) {
+			rad += 0.05f;
+			var value=Mathf.Sin (rad);
+			scoreText.color = new Color (1, 1, 1, value);
+			newScoreText.color = new Color (1, 1, 1, -value);
+			yield return new WaitForEndOfFrame ();
+		}
+	}
 }
