@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class OnHoverDescription : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class OnHoverDescription : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     GameObject textBoxPanel;
@@ -89,5 +90,10 @@ public class OnHoverDescription : MonoBehaviour, IPointerEnterHandler, IPointerE
         shouldCount = true; 
         counter = 0;
         textBoxPanel.SetActive(false);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        shouldCount = false;
     }
 }

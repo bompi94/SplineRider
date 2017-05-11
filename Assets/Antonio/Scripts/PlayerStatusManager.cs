@@ -120,6 +120,7 @@ public class PlayerStatusManager : MonoBehaviour
 	public void ToMainMenu()
 	{
 		StopCoroutine ("NewBestScoreAnimation");
+        Time.timeScale = 1; 
 		SceneManager.LoadScene("MainMenu");
 	}
 
