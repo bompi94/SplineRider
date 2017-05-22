@@ -31,7 +31,7 @@ public class CatmullRomSpline : MonoBehaviour
     {
         if (positions == null)
         {
-            positions = new Vector3[numberOfIntermediatePoints * (x.Length - 2) - 8];
+            positions = new Vector3[(numberOfIntermediatePoints+1) * (x.Length-3)];
             colliderPointsArray = new Vector2[positions.Length];
         }
 
@@ -64,6 +64,7 @@ public class CatmullRomSpline : MonoBehaviour
         lineRenderer.numPositions = positions.Length;
         lineRenderer.SetPositions(positions);
 
+        //creates a collider that follow the line
         for (int i = 0; i < positions.Length; i++)
         {
             colliderPointsArray[i].x = positions[i].x;
@@ -99,7 +100,7 @@ public class CatmullRomSpline : MonoBehaviour
         Vector3 c = 2f * p0 - 5f * p1 + 4f * p2 - p3;
         Vector3 d = -p0 + 3f * p1 - 3f * p2 + p3;
 
-        Vector3 pos = 0.5f * (a + (b * t) + (c * t * t) + (d * t * t * t));
+        Vector3 pos =  .5f * (a + (b * t) + (c * t * t) + (d * t * t * t));
 
         return pos;
     }

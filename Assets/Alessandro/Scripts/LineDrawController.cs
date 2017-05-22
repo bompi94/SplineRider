@@ -43,7 +43,7 @@ public class LineDrawController : MonoBehaviour
             AddPointToShow();
             if (counter == pointsNeededToDraw)
             {
-                ResetOldStuff();
+                DeleteOldSpline();
 
                 DrawSpline();
 
@@ -54,11 +54,11 @@ public class LineDrawController : MonoBehaviour
 
     void DrawSpline()
     {
-        spline.Draw(pointsPosX, pointsPosY);
         mySplineObject.SetActive(true);
+        spline.Draw(pointsPosX, pointsPosY);
     }
 
-    void ResetOldStuff()
+    void DeleteOldSpline()
     {
         mySplineObject.SetActive(false); 
         counter = 0; 
@@ -77,6 +77,7 @@ public class LineDrawController : MonoBehaviour
         listCont++;
 
         //I will add 2 point at the extremes because they are the control points
+        //that's why i need 2 counters instead of 1, because they diverge here
         if (counter == 1 || counter == pointsNeededToDraw)
         {
             pointsUsed[listCont] = pointClone;
