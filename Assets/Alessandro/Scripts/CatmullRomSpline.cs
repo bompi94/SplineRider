@@ -73,7 +73,7 @@ public class CatmullRomSpline : MonoBehaviour
         edgeCollider.points = colliderPointsArray;
     }
 
-    //finds some intermediate points and adds them to the positions list
+    //finds intermediate points and adds them to the positions list
     void FindIntermediatePoints(Vector3 pi_minus_1, Vector3 pi, Vector3 pi_plus_1, Vector3 pi_plus_2)
     {
         positions[positionsIndex] = pi;
@@ -82,7 +82,7 @@ public class CatmullRomSpline : MonoBehaviour
         for (int i = 1; i < numberOfIntermediatePoints; i++)
         {
             float percentageOnTheLine = i * resolution;
-            intermediatePoint = GetCatmullRomPosition(percentageOnTheLine, pi_minus_1, pi, pi_plus_1, pi_plus_2);
+            intermediatePoint = GetIntermediatePoint(percentageOnTheLine, pi_minus_1, pi, pi_plus_1, pi_plus_2);
 
             positions[positionsIndex] = intermediatePoint;
             positionsIndex++;
@@ -92,15 +92,16 @@ public class CatmullRomSpline : MonoBehaviour
         positionsIndex++;
     }
 
-    Vector3 GetCatmullRomPosition(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
+    Vector3 GetIntermediatePoint(float t, Vector3 pi_minus_1, Vector3 pi, Vector3 pi_plus_1, Vector3 pi_plus_2)
     {
-        //coefficients
-        Vector3 a = 2f * p1;
-        Vector3 b = p2 - p0;
-        Vector3 c = 2f * p0 - 5f * p1 + 4f * p2 - p3;
-        Vector3 d = -p0 + 3f * p1 - 3f * p2 + p3;
+        //coefficients of the CatmullRom spline formula
+        Vector3 c1 = 2f * pi;
+        Vector3 c2 = pi_plus_1 - pi_minus_1;
+        Vector3 c3 = 2f * pi_minus_1 - 5f * pi + 4f * pi_plus_1 - pi_plus_2;
+        Vector3 c4 = -pi_minus_1 + 3f * pi - 3f * pi_plus_1 + pi_plus_2;
 
-        Vector3 pos =  .5f * (a + (b * t) + (c * t * t) + (d * t * t * t));
+        //Catmull Rom spline formula
+        Vector3 pos = .5f * (c1 + (c2 * t) + (c3 * Mathf.Pow(t, 2)) + (c4 * Mathf.Pow(t, 3)));
 
         return pos;
     }
